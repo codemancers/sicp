@@ -9,7 +9,7 @@
         (= x 0) (* 2 y)
         (= y 1) 2
         :else (ackermann_function (- x 1)
-                 (ackermann_function x (- y 1)))))
+                                  (ackermann_function x (- y 1)))))
 
 ;; What are the values of the following expressions?
 
@@ -62,10 +62,10 @@
   (cond (= amount 0) 1
         (or (< amount 0) (= kinds-of-coins 0)) 0
         :else (+ (cc_recur amount
-                     (- kinds-of-coins 1))
+                           (- kinds-of-coins 1))
                  (cc_recur (- amount
-                        (first-denomination kinds-of-coins))
-                     kinds-of-coins))))
+                              (first-denomination kinds-of-coins))
+                           kinds-of-coins))))
 
 (defn count_change
   [amount]
@@ -85,7 +85,8 @@
        (* 2 (ex_1_11_recur (- n 2)))
        (* 3 (ex_1_11_recur (- n 3))))))
 
-(defn ex_1_11_iter [n]
+(defn ex_1_11_iter
+  [n]
   (letfn [(ex_1_11_help
             [n1 n2 n3 cnt]
             (def val (+ n1 (* 2 n2) (* 3 n3)))
@@ -94,3 +95,14 @@
               (ex_1_11_help val n1 n2 (inc cnt))))]
     (if (< n 3) n
         (ex_1_11_help 2 1 0 3))))
+
+;; Exercise 1.12. Write a procedure that computes elements of
+;; Pascal's triangle by means of a recursive process.
+
+(defn pascal
+  [row col]
+  (cond (or (< col 0) (< row 0) (< row col)) (throw (Exception. "Out of range"))
+        (= col row) 1
+        (= col 0) 1
+        :else (+ (pascal (dec row) (dec col))
+                 (pascal (dec row) col))))
