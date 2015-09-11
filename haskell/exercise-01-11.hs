@@ -10,6 +10,4 @@ fIter (a, b, c) n
       let val = a + 2 * b + 3 * c
       in fIter (val, a, b) (n - 1)
 
-fIterative n
-  | n < 3 = n
-  | otherwise = fIter (2, 1, 0) n
+fIterative n = fIter (2, 1, 0) n
