@@ -205,18 +205,37 @@
 ;; a * b = 2a * b/2 if b is even
 ;; a * b = a + a * (b - 1) if b is odd
 
-(defn fast-mult [a b]
-  (letfn[(*
-           [a b]
-           (if (= b 0)
-             0
-             (+ a (* a (- b 1)))))
-         (doub
-           [x]
-           (+ x x))
-         (halve
-           [x]
-           (/ x 2))])
+(defn fast-mult-recur
+  [a b]
+  (letfn [(doub
+            [x]
+            (+ x x))
+          (halve
+            [x]
+            (/ x 2))]
   (cond (= b 0) 0
-        (even? b) (fast-mult (doub a) (halve b))
-        :else (+ a (fast-mult a (dec b)))))
+        (even? b) (fast-mult-recur (doub a) (halve b))
+        :else (+ a (fast-mult-recur a (dec b))))))
+
+;; Exercise 1.18.  Using the results of exercises 1.16 and 1.17, devise procedure
+;; a that generates an iterative process for multiplying two integers
+;; in terms of adding, doubling, and halving and uses a logarithmic number of
+;; steps.
+
+(defn fast-mult-iter
+  [a b]
+  (letfn [(doub
+            [x]
+            (+ x x))
+          (halve
+            [x]
+            (/ x 2))
+          (fast-mult
+            [a b acc]
+            (cond (= b 0) acc
+                  (even? b) (fast-mult (doub a) (halve b) acc)
+                  :else (fast-mult a (dec b) (+ acc a)))
+            )]
+    (fast-mult a b 0)))
+
+(fast-mult-iter 2 5)
