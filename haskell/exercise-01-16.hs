@@ -5,11 +5,9 @@ fastExpt b n
   | otherwise = b * (fastExpt b (n - 1))
 
 
-squareUp x times acc
-  | times == 0 = acc
-  | otherwise = squareUp x (times - 1) (acc * x * x)
+fastExptHelper b n acc
+  | n == 0 = acc
+  | even n = fastExptHelper (b^2) (div n 2) acc
+  | otherwise = fastExptHelper b (n-1) (acc*b)
 
-fastExptIter b n acc timesToSquare
-  | n == 0 = acc * (squareUp b timesToSquare 1)
-  | even n = fastExptIter b (div n 2) acc (timesToSquare + 1)
-  | otherwise = fastExptIter b (n-1) (acc*b) timesToSquare
+fastExptIter b n = fastExptHelper b n 1
