@@ -292,8 +292,39 @@
     (get-divisor n 2)))
 
 (smallest-divisor 199)
-; 199
+                                        ; 199
 (smallest-divisor 1999)
-; 1999
+                                        ; 1999
 (smallest-divisor 19999)
-; 7
+                                        ; 7
+
+
+;; Exercise 1.22
+
+(defn search-for-primes [from]
+  (letfn [(prime?
+            [n]
+            (= n (smallest-divisor n)))
+          (current-time
+            []
+            (System/nanoTime))
+          (report-prime
+            [n elapsed-time]
+            (println n " *** " elapsed-time))
+          (start-prime-test
+            [n start-time]
+            (if (prime? n)
+              (report-prime n (- (current-time) start-time))
+              false))
+          (timed-prime-test
+            [n]
+            (start-prime-test n (current-time)))
+          (iter
+            [i count]
+            (if (timed-prime-test i)
+              (if (< (inc count) 3)
+                (recur (+ i 2) (inc count)))
+              (recur (+ i 2) count)))]
+    (if (odd? from)
+      (iter from 0)
+      (iter (inc from) 0))))
